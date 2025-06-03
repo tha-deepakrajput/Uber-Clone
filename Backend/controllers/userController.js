@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 
-const userModel = require("../models/userModel");
+const { userModel } = require("../models/userModel");
 const userService = require("../services/userService");
 
 module.exports.registerUser = async (req, res, next) => {
@@ -10,8 +10,6 @@ module.exports.registerUser = async (req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(404).json({ errors: errors.array() });
     }
-
-    console.log(req.body);
 
     const { fullName, email, password } = req.body;
 

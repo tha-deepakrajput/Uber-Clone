@@ -12,12 +12,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/users', userRoutes);
-
 connectToDb();
 
 app.get("/", (req, res) => {
     res.send("HomePage");
 });
+
+app.use('/users', userRoutes);
 
 module.exports = app;
