@@ -1,15 +1,64 @@
-# User Registration Endpoint Documentation
+# User Registration API Documentation
 
-## POST `/users/register`
+## Register User
+Register a new user in the system.
 
-Registers a new user in the system.
+### Endpoint
+```
+POST /users/register
+```
 
----
+### Request Body
+```json
+{
+  "fullName": {
+    "firstName": "string", // minimum 3 characters
+    "lastName": "string"   // optional, minimum 3 characters if provided
+  },
+  "email": "string",      // valid email format, minimum 5 characters
+  "password": "string"    // minimum 6 characters
+}
+```
 
-### **Request Body**
+### Success Response
+- **Status Code**: 201 Created
+- **Response Body**:
+```json
+{
+  "token": "jwt_token_string",
+  "user": {
+    "fullName": {
+      "firstName": "string",
+      "lastName": "string"
+    },
+    "email": "string",
+    "_id": "string"
+  }
+}
+```
 
-Send a JSON object with the following structure:
+### Error Response
+- **Status Code**: 404 Not Found
+- **Response Body**:
+```json
+{
+  "errors": [
+    {
+      "msg": "error message",
+      "param": "field_name",
+      "location": "body"
+    }
+  ]
+}
+```
 
+### Validation Rules
+- firstName: Required, minimum 3 characters
+- lastName: Optional, minimum 3 characters if provided
+- email: Required, valid email format, minimum 5 characters
+- password: Required, minimum 6 characters
+
+### Example Request
 ```json
 {
   "fullName": {
@@ -17,77 +66,6 @@ Send a JSON object with the following structure:
     "lastName": "Doe"
   },
   "email": "john.doe@example.com",
-  "password": "yourpassword"
+  "password": "password123"
 }
 ```
-
-#### **Field Requirements**
-- `fullName.firstName` (string, required): Minimum 3 characters.
-- `fullName.lastName` (string, optional): Minimum 3 characters if provided.
-- `email` (string, required): Must be a valid email address.
-- `password` (string, required): Minimum 6 characters.
-
----
-
-### **Responses**
-
-#### **Success**
-- **Status:** `201 Created`
-- **Body:**
-  ```json
-  {
-    "token": "<jwt_token>",
-    "user": {
-      "_id": "user_id",
-      "fullName": {
-        "firstName": "John",
-        "lastName": "Doe"
-      },
-      "email": "john.doe@example.com"
-      // ...other user fields
-    }
-  }
-  ```
-
-#### **Validation Error**
-- **Status:** `404 Not Found`
-- **Body:**
-  ```json
-  {
-    "errors": [
-      {
-        "msg": "Error message",
-        "param": "field",
-        "location": "body"
-      }
-    ]
-  }
-  ```
-
-#### **Missing Fields/Error**
-- **Status:** `500 Internal Server Error`
-- **Body:**
-  ```json
-  {
-    "error": "All fields are required"
-  }
-  ```
-
----
-
-### **Example Request**
-
-```bash
-curl -X POST http://localhost:PORT/users/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "fullName": { "firstName": "John", "lastName": "Doe" },
-    "email": "john.doe@example.com",
-    "password": "yourpassword"
-  }'
-```
-
----
-
-**Note:**  
-Replace `PORT` with your backend server port.
