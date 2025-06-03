@@ -13,4 +13,11 @@ router.post("/register", [
     userConroller.registerUser
 );
 
+router.post("/login", [
+    body("email").isEmail().withMessage("Invalid Email"),
+    body("password").isLength({ min: 6 }).withMessage("password must be at least 6 characters long"),
+],
+    userConroller.loginUser
+)
+
 module.exports = router;
