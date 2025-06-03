@@ -20,4 +20,6 @@ router.post("/login", [
     userConroller.loginUser
 )
 
+router.get("/profile", userConroller.getUserProfile)
+
 module.exports = router;
