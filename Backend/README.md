@@ -140,3 +140,52 @@ POST /users/login
   "password": "password123"
 }
 ```
+
+### Get User Profile
+**Endpoint:** `GET /users/profile`
+
+Retrieves the profile information of the currently authenticated user.
+
+**Authentication Required:** Yes (JWT Token)
+
+**Headers:**
+- `Authorization`: Bearer {token}
+
+**Response:**
+```json
+{
+  "_id": "user_id",
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "createdAt": "2025-06-09T10:00:00.000Z",
+  "updatedAt": "2025-06-09T10:00:00.000Z"
+}
+```
+
+**Status Codes:**
+- `200`: Success
+- `401`: Unauthorized (invalid or missing token)
+
+### Logout User
+**Endpoint:** `GET /users/logout`
+
+Logs out the current user by invalidating their authentication token.
+
+**Authentication Required:** Yes (JWT Token)
+
+**Headers:**
+- `Authorization`: Bearer {token}
+
+**Response:**
+```json
+{
+  "message": "Logged Out"
+}
+```
+
+**Status Codes:**
+- `200`: Success
+- `401`: Unauthorized (invalid or missing token)
+
+// ...existing code...
