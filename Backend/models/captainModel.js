@@ -19,7 +19,7 @@ const captainSchema = new mongoose.Schema({
         required: true, 
         unique: true, 
         lowercase: true, 
-        match: [ /^\S+@+\.\S+$/, "Please enter a valid email"],
+        match: [ /^\S+\.\S+$/, "Please enter a valid email"],
     },
     password: {
         type: String, 
@@ -31,8 +31,8 @@ const captainSchema = new mongoose.Schema({
     },
     status: {
         type: String, 
-        enum: ["active, inActive"],
-        default: "inActive",
+        enum: ["active", "inactive"],
+        default: "inactive",
     },
     vehicle: {
         color: {

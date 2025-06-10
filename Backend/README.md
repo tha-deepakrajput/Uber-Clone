@@ -188,4 +188,99 @@ Logs out the current user by invalidating their authentication token.
 - `200`: Success
 - `401`: Unauthorized (invalid or missing token)
 
-// ...existing code...
+# Captain API Documentation
+
+## Register Captain
+Register a new captain in the system.
+
+### Endpoint
+```
+POST /captains/register
+```
+
+### Request Body
+```json
+{
+  "fullName": {
+    "firstName": "string",  // minimum 3 characters
+    "lastName": "string"    // optional, minimum 3 characters if provided
+  },
+  "email": "string",        // valid email format
+  "password": "string",     // minimum 6 characters
+  "vehicle": {
+    "color": "string",      // minimum 3 characters
+    "plate": "string",      // minimum 3 characters
+    "capacity": "number",   // minimum 1
+    "vehicleType": "string" // must be one of: "car", "motorCycle", "auto"
+  }
+}
+```
+
+### Success Response
+- **Status Code**: 201 Created
+- **Response Body**:
+```json
+{
+  "token": "jwt_token_string",
+  "captain": {
+    "fullName": {
+      "firstName": "string",
+      "lastName": "string"
+    },
+    "email": "string",
+    "vehicle": {
+      "color": "string",
+      "plate": "string",
+      "capacity": "number",
+      "vehicleType": "car"
+    },
+    "status": "inactive",
+    "_id": "string"
+  }
+}
+```
+
+### Error Responses
+
+#### Validation Error
+- **Status Code**: 404 Not Found
+- **Response Body**:
+```json
+{
+  "errors": [
+    {
+      "msg": "error message",
+      "param": "field_name",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### Validation Rules
+- firstName: Required, minimum 3 characters
+- lastName: Optional, minimum 3 characters if provided
+- email: Required, valid email format
+- password: Required, minimum 6 characters
+- vehicle.color: Required, minimum 3 characters
+- vehicle.plate: Required, minimum 3 characters
+- vehicle.capacity: Required, minimum value of 1
+- vehicle.vehicleType: Required, must be one of: "car", "motorCycle", "auto"
+
+### Example Request
+```json
+{
+  "fullName": {
+    "firstName": "John",
+    "lastName": "Smith"
+  },
+  "email": "john.smith@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Black",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
