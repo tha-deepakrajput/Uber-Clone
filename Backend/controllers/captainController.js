@@ -47,6 +47,7 @@ module.exports.loginCaptain = async (req, res, next) => {
     }
 
     const { email, password } = req.body;
+    console.log(req.body);
 
     const captain = await captainModel.findOne({ email }).select("+password");
 

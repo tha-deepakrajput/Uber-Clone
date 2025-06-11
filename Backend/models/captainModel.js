@@ -10,55 +10,55 @@ const captainSchema = new mongoose.Schema({
             minLength: [3, "Firstname must be at least 3 characters long"],
         },
         lastName: {
-            type: String, 
+            type: String,
             minLength: [3, "Lastname must be at least 3 characters long"],
         },
     },
     email: {
-        type: String, 
-        required: true, 
-        unique: true, 
-        lowercase: true, 
-        match: [ /^\S+@+\.\S+$/, "Please enter a valid email"],
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"],
     },
     password: {
-        type: String, 
-        required: true, 
-        select: false,        
+        type: String,
+        required: true,
+        select: false,
     },
     socketId: {
         type: String,
     },
     status: {
-        type: String, 
+        type: String,
         enum: ["active", "inactive"],
         default: "inactive",
     },
     vehicle: {
         color: {
-            type: String, 
-            required: true, 
+            type: String,
+            required: true,
             minLength: [3, "Color must be at least 3 characters long"],
         },
         plate: {
-            type: String, 
-            required: true, 
+            type: String,
+            required: true,
             minLength: [3, "Plate must be at least 3 characters long"],
         },
         capacity: {
-            type: Number, 
-            required: true, 
+            type: Number,
+            required: true,
             minLength: [1, "Capacity must be at least 1"],
         },
         vehicleType: {
-            type: String, 
-            required: true, 
+            type: String,
+            required: true,
             enum: ["car", "motorCycle", "auto"],
         },
     },
     location: {
         lat: {
-            type: Number, 
+            type: Number,
         },
         lng: {
             type: Number,
@@ -68,20 +68,24 @@ const captainSchema = new mongoose.Schema({
 
 captainSchema.methods.generateAuthToken = () => {
     const token = jwt.sign(
-        {_id: this._id},
+        { _id: this._id },
         process.env.JWT_SECRET,
-        {expiresIn: "24h"},
+        { expiresIn: "24h" },
     );
     return token;
 }
 
-captainSchema.methods.comparePassword = async (password) => {
+captainSchema.methods.comparePassword = async function (password) {
+    if (!password) throw new Error("Password is required");
+    if (!this.password) throw new Error("Stored hashed password is missing");
     return await bcrypt.compare(password, this.password);
-}
+};
 
-captainSchema.statics.hashPassword = async (password) => {
-    return await bcrypt.hash(password, 10);
-}
+captainSchema.methods.hashPassword = async function (password) {
+    if (!password) throw new Error("Password is required");
+    const saltRounds = 10;
+    return await bcrypt.hash(password, saltRounds);
+};
 
 const captainModel = mongoose.model("captain", captainSchema);
 
