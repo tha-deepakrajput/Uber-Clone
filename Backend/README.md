@@ -284,3 +284,107 @@ POST /captains/register
   }
 }
 ```
+
+## Login Captain
+Authenticate a captain and retrieve a JWT token.
+
+### Endpoint
+```
+POST /captains/login
+```
+
+### Request Body
+```json
+{
+  "email": "string",    // valid email format
+  "password": "string"  // minimum 6 characters
+}
+```
+
+### Success Response
+- **Status Code**: 200 OK
+- **Response Body**:
+```json
+{
+  "token": "jwt_token_string",
+  "captain": {
+    "fullName": {
+      "firstName": "John",
+      "lastName": "Smith"
+    },
+    "email": "john.smith@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "_id": "captain_id",
+    "createdAt": "timestamp",
+    "updatedAt": "timestamp"
+  }
+}
+```
+
+### Error Response
+- **Status Code**: 401 Unauthorized
+```json
+{
+  "message": "Invalid email or password"
+}
+```
+
+## Get Captain Profile
+**Endpoint:** `GET /captains/profile`
+
+Retrieves the profile information of the currently authenticated captain.
+
+**Authentication Required:** Yes (JWT Token)
+
+**Headers:**
+- `Authorization`: Bearer {token}
+
+**Success Response:**
+- **Status Code**: 200 OK
+```json
+{
+  "captain": {
+    "fullName": {
+      "firstName": "John",
+      "lastName": "Smith"
+    },
+    "email": "john.smith@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "_id": "captain_id",
+    "createdAt": "timestamp",
+    "updatedAt": "timestamp"
+  }
+}
+```
+
+## Logout Captain
+**Endpoint:** `GET /captains/logout`
+
+Logs out the current captain by invalidating their authentication token.
+
+**Authentication Required:** Yes (JWT Token)
+
+**Headers:**
+- `Authorization`: Bearer {token}
+
+**Success Response:**
+- **Status Code**: 200 OK
+```json
+{
+  "message": "Logout Successfully"
+}
+```
+
+**Status Codes:**
+- `200`: Success
+- `401`: Unauthorized (invalid or missing token)
